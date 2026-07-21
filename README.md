@@ -98,3 +98,66 @@ Presenter - презентер содержит основную логику п
 `emit<T extends object>(event: string, data?: T): void` - инициализация события. При вызове события в метод передается название события и объект с данными, который будет использован как аргумент для вызова обработчика.  
 `trigger<T extends object>(event: string, context?: Partial<T>): (data: T) => void` - возвращает функцию, при вызове которой инициализируется требуемое в параметрах событие с передачей в него данных из второго параметра.
 
+
+Данные:
+    Товар:
+        interface IProduct {
+        id: string; - айди товара;
+        description: string; - описание товара;
+        image: string; - изображение товара (url);
+        title: string; - название товара;
+        category: string; - категория товара;
+        price: number | null; - цена товара (null — если цена не указана);
+        }
+        
+    Покупатель:
+        interface IBuyer {
+        payment: TPayment; - способ оплаты (карта или наличные);
+        email: string; - емэйл покупателя;
+        phone: string; - телефон покупателя;
+        address: string; - адрес покупателя;
+        }
+
+Модели данных:
+    ProductModel - каталог товаров:
+
+        items: IProduct[] - хранит массив всех товаров;
+        selectedProduct: IProduct | null - хранит товар, выбранный для подробного отображения;
+
+        методы:
+
+            setCatalog(items: IProduct[]): void - сохранение массива товаров полученного в параметрах метода;
+            getCatalog(): IProduct[] - получение массива товаров из модели;
+            getProduct(id: string): IProduct | undefined - получение одного товара по его id;
+            setSelectedProduct(product: IProduct): void - сохранение товара для подробного отображения;
+            getSelectedProduct(): IProduct | null - получение товара для подробного отображения.
+
+    BasketModel - корзина:
+        items: IProduct[] - хранит массив товаров, выбранных покупателем для покупки.
+
+        методы:
+            getItems(): IProduct[] - получение массива товаров, которые находятся в корзине;
+            addItem(product: IProduct): void - добавление товара, который был получен в параметре, в массив корзины;
+            removeItem(id: string): void - удаление товара, полученного в параметре из массива корзины;
+            clear(): void - очистка корзины;
+            getTotal(): number - получение стоимости всех товаров в корзине;
+            getCount(): number - получение количества товаров в корзине;
+            hasItem(id: string): boolean - проверка наличия товара в корзине по его id, полученного в параметре метода.
+
+    BuyerModel - покупатель:
+        хранит следующие данные:
+            payment: TPayment - вид оплаты;
+            address:string - адреc;
+            phone:string - телефон;
+            email:string - емэйл;
+            errors: FormErrors - объект, который содержит сообщения об ошибках валидации для каждого не валидного поля. Тип FormErrors: Record<keyof IBuyer, string | undefined>;
+
+
+        методы:
+            setPayment(value: TPayment): void — сохраняет вид оплаты.
+            setAddress(value: string): void — сохраняет адрес.
+            setPhone(value: string): void — сохраняет телефон.
+            setEmail(value: string): void — сохраняет email.
+            getBuyerData(): IBuyer - получение всех данных покупателя;
+            clear(): void - очистка данных покупателя;
+            validate(): FormErrors - валидация данных.
