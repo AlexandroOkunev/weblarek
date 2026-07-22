@@ -126,8 +126,8 @@ Presenter - презентер содержит основную логику п
 
         методы:
 
-            setCatalog(items: IProduct[]): void - сохранение массива товаров полученного в параметрах метода;
-            getCatalog(): IProduct[] - получение массива товаров из модели;
+            setItems(items: IProduct[]): void - сохранение массива товаров полученного в параметрах метода;
+            getItems(): IProduct[] - получение массива товаров из модели;
             getProduct(id: string): IProduct | undefined - получение одного товара по его id;
             setSelectedProduct(product: IProduct): void - сохранение товара для подробного отображения;
             getSelectedProduct(): IProduct | null - получение товара для подробного отображения.
