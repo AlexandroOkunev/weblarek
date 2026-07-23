@@ -17,7 +17,7 @@ export interface IProduct {
 };
 
 export interface IBuyer {
-    payment: TPayment | null;
+    payment: TPayment;
     email: string;
     phone: string;
     address: string;
@@ -44,7 +44,7 @@ export interface IBasketModel {
     getTotal(): number;
     getCount(): number;
     hasItem(id: string): boolean;
-}
+};
 
 export interface IBuyerModel {
     payment: TPayment | null;
@@ -59,4 +59,22 @@ export interface IBuyerModel {
     getBuyerData(): IBuyer;
     clear(): void;
     validate(): FormErrors;
+};
+
+export interface IProductsResponse {
+    items: IProduct[];
+};
+
+export interface IOrder {
+    items: string[];
+    payment: TPayment;
+    address: string;
+    phone: string;
+    email: string;
+    total: number;
+};
+
+export interface IOrderResult {
+    id: string;
+    total: number;
 }
