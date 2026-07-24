@@ -17,7 +17,7 @@ export interface IProduct {
 };
 
 export interface IBuyer {
-    payment: TPayment;
+    payment: TPayment | null;
     email: string;
     phone: string;
     address: string;
@@ -26,8 +26,6 @@ export interface IBuyer {
 export type FormErrors = Partial<Record<keyof IBuyer, string>>;
 
 export interface IProductModel {
-    items: IProduct[];
-    selectedProduct: IProduct | null;
     setItems(items: IProduct[]): void;
     getItems(): IProduct[];
     getProduct(id: string): IProduct | undefined;
@@ -36,7 +34,6 @@ export interface IProductModel {
 };
 
 export interface IBasketModel {
-    items: IProduct[];
     getItems(): IProduct[];
     addItem(product: IProduct): void;
     removeItem(id: string): void;
@@ -47,11 +44,6 @@ export interface IBasketModel {
 };
 
 export interface IBuyerModel {
-    payment: TPayment | null;
-    address: string;
-    phone: string;
-    email: string;
-    errors: FormErrors;
     setPayment(value: TPayment): void;
     setAddress(value: string): void;
     setPhone(value: string): void;

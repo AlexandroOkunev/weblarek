@@ -1,7 +1,7 @@
 import { IProduct, IBasketModel } from "../../types";
 
 export class BasketModel implements IBasketModel {
-    items: IProduct[] = [];
+    protected items: IProduct[] = [];
 
     getItems(): IProduct[] {
         return this.items;

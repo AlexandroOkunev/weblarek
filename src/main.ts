@@ -1,13 +1,13 @@
 import "./scss/styles.scss";
 
 import { apiProducts } from "./utils/data";
+import { API_URL } from "./utils/constants";
 
 import { ProductModel } from "./components/Models/ProductModel";
 import { BasketModel } from "./components/Models/BasketModel";
 import { BuyerModel } from "./components/Models/BuyerModel";
 
 import { Api } from "./components/base/Api";
-
 import { WebLarekApi } from "./components/WebLarekApi/webLarekApi";
 
 import { TPayment } from "./types";
@@ -60,25 +60,25 @@ console.log("3. ПРОВЕРКА BuyerModel");
 const buyerModel = new BuyerModel();
 console.log("1. Начальные данные покупателя:", buyerModel.getBuyerData());
 console.log("2. Валидация пустой формы (должны быть ошибки):", buyerModel.validate());
-console.log("3. Объект ошибок:", buyerModel.errors);
+console.log("3. Объект ошибок:", buyerModel.validate());
 buyerModel.setPayment("online" as TPayment);
-console.log("4. После setPayment — payment:", buyerModel.payment);
+console.log("4. После setPayment — payment:", buyerModel.getBuyerData().payment);
 console.log("5. Остальные поля не изменились:", buyerModel.getBuyerData());
 buyerModel.setAddress("г. Москва, ул. Скворцова, д. 7");
-console.log("6. После setAddress — address:", buyerModel.address);
+console.log("6. После setAddress — address:", buyerModel.getBuyerData().address);
 buyerModel.setPhone("+7 (111) 111-11-11");
-console.log("7. После setPhone — phone:", buyerModel.phone);
+console.log("7. После setPhone — phone:", buyerModel.getBuyerData().phone);
 buyerModel.setEmail("alex@example.com");
-console.log("8. После setEmail — email:", buyerModel.email);
+console.log("8. После setEmail — email:", buyerModel.getBuyerData().email);
 console.log("9. Валидация заполненной формы (должен быть {}):", buyerModel.validate());
 console.log("10. Итоговые данные покупателя:", buyerModel.getBuyerData());
 buyerModel.setEmail("");
 console.log("11. Валидация с пустым email (должна быть ошибка email):", buyerModel.validate());
 buyerModel.clear();
 console.log("12. После clear — данные:", buyerModel.getBuyerData());
-console.log("13. После clear — ошибки:", buyerModel.errors);
+console.log("13. После clear — ошибки:", buyerModel.validate());
 
-const baseApi = new Api(import.meta.env.VITE_API_ORIGIN, {
+const baseApi = new Api(API_URL, {
     headers: {
         "Content-Type": "application/json",
     }

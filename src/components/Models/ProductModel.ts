@@ -1,9 +1,9 @@
 import { IProduct, IProductModel } from "../../types";
 
 export class ProductModel implements IProductModel {
-    items: IProduct[] = [];
+    protected items: IProduct[] = [];
 
-    selectedProduct: IProduct | null = null;
+    protected selectedProduct: IProduct | null = null;
 
     setItems(items: IProduct[]): void {
         this.items = items;
