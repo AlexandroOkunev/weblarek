@@ -112,7 +112,7 @@ Presenter - презентер содержит основную логику п
         
     Покупатель:
         interface IBuyer {
-        payment: TPayment; - способ оплаты (карта или наличные);
+        payment: TPayment | null; - способ оплаты (карта или наличные);
         email: string; - емэйл покупателя;
         phone: string; - телефон покупателя;
         address: string; - адрес покупателя;
@@ -149,7 +149,6 @@ Presenter - презентер содержит основную логику п
             address:string - адреc;
             phone:string - телефон;
             email:string - емэйл;
-            errors: FormErrors - объект, который содержит сообщения об ошибках валидации для каждого не валидного поля. Тип FormErrors: Record<keyof IBuyer, string | undefined>;
 
         Методы:
             setPayment(value: TPayment): void — сохраняет вид оплаты.
@@ -158,19 +157,17 @@ Presenter - презентер содержит основную логику п
             setEmail(value: string): void — сохраняет email.
             getBuyerData(): IBuyer - получение всех данных покупателя;
             clear(): void - очистка данных покупателя;
-            validate(): FormErrors - валидация данных.
+            validate(): FormErrors - валидация данных. Возвращает объект, который содержит сообщения об ошибках валидации для каждого не валидного поля. Тип FormErrors: Partial<Record<keyof IBuyer, string>>;
 
 ## Слой коммуникации:
     Класс:
         WebLarekApi — использует композицию, чтобы выполнить запрос на сервер с помощью метода get класса Api и будет получать с сервера объект с массивом товаров.
 
     Данные:
-        interface IApi {
-            api: IApi;
-        }
+        protected api: IApi; -  ссылка на экземпляр базового класса для выполнения сетевых запросов.
 
     Методы:
         getProductList(): Promise<IProductListResponse> — делает get запрос на эндпоинт /product/ и возвращает объект, полученный от сервера, в котором находится массив товаров.
 
-        postOreder(oder: IOder): Promise<IOderResult> — делает post запрос на эндпоинт /order/ и передаёт в него данные, полученные в параметрах метода, а возвращает объект, подтверждающий покупку на определенную сумму.
+        postOrder(order: IOrder): Promise<IOrderResult> — делает post запрос на эндпоинт /order/ и передаёт в него данные, полученные в параметрах метода, а возвращает объект, подтверждающий покупку на определенную сумму.
     

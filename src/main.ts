@@ -89,6 +89,7 @@ const webLarekApi = new WebLarekApi(baseApi);
 webLarekApi.getProductList()
 .then((response) => {
     console.log("Ответ от сервера:", response);
+    console.log("Общее количество товаров:", response.total);
     console.log("Массив товаров из ответа:", response.items);
     productsModel.setItems(response.items);
     console.log("Каталог, сохранённый в модели после запроса:", productsModel.getItems());
