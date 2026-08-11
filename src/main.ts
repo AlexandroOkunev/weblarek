@@ -7,13 +7,16 @@ import { ProductModel } from "./components/Models/ProductModel";
 import { BasketModel } from "./components/Models/BasketModel";
 import { BuyerModel } from "./components/Models/BuyerModel";
 
+import { EventEmitter } from "./components/base/Events";
 import { Api } from "./components/base/Api";
 import { WebLarekApi } from "./components/WebLarekApi/webLarekApi";
 
 import { TPayment } from "./types";
 
+const events = new EventEmitter();
+
 console.log("1. ПРОВЕРКА ProductModel");
-const productsModel = new ProductModel();
+const productsModel = new ProductModel(events);
 console.log("1. Начальный каталог (должен быть []):", productsModel.getItems());
 console.log("2. Начальный выбранный товар (должен быть null):", productsModel.getSelectedProduct());
 productsModel.setItems(apiProducts.items);
@@ -29,7 +32,7 @@ productsModel.setSelectedProduct(oneProduct);
 console.log("7. Выбранный товар после setSelectedProduct:", productsModel.getSelectedProduct());
 
 console.log("2. ПРОВЕРКА BasketModel");
-const basketModel = new BasketModel();
+const basketModel = new BasketModel(events);
 console.log("1. Начальная корзина (должна быть []):", basketModel.getItems());
 console.log("2. Начальное количество (должно быть 0):", basketModel.getCount());
 console.log("3. Начальная сумма (должна быть 0):", basketModel.getTotal());
@@ -57,7 +60,7 @@ console.log("15. Сумма после clear (должна быть 0):", basket
 
 
 console.log("3. ПРОВЕРКА BuyerModel");
-const buyerModel = new BuyerModel();
+const buyerModel = new BuyerModel(events);
 console.log("1. Начальные данные покупателя:", buyerModel.getBuyerData());
 console.log("2. Валидация пустой формы (должны быть ошибки):", buyerModel.validate());
 console.log("3. Объект ошибок:", buyerModel.validate());

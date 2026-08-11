@@ -1,7 +1,13 @@
+import { IEvents } from "../base/Events";
 import { IProduct, IBasketModel } from "../../types";
 
 export class BasketModel implements IBasketModel {
     protected items: IProduct[] = [];
+    protected events: IEvents;
+
+    constructor(events: IEvents) {
+        this.events = events;
+    }
 
     getItems(): IProduct[] {
         return this.items;
@@ -10,18 +16,53 @@ export class BasketModel implements IBasketModel {
     addItem(product: IProduct): void {
         if (!this.hasItem(product.id)) {
             this.items.push(product);
+
+            this.events.emit("basket:item-added", {
+                product,
+                count: this.getCount(),
+                total: this.getTotal(),
+            });
+
+            this.events.emit("basket:changed", {
+                items: this.getItems(),
+                count: this.getCount(),
+                total: this.getTotal(),
+            });
         };
     };
 
     removeItem(id: string): void {
         const index = this.items.findIndex((item) => item.id === id);
         if (index !== -1) {
+            const removedItem = this.items[index];
             this.items.splice(index, 1);
+
+            this.events.emit("basket:item-removed", {
+                product: removedItem,
+                count: this.getCount(),
+                total: this.getTotal(),
+            });
+
+            this.events.emit("basket:changed", {
+                items: this.getItems(),
+                count: this.getCount(),
+                total: this.getTotal(),
+            });
         };
     };
 
     clear(): void {
         this.items = [];
+        this.events.emit("basket:cleared", {
+            count: this.getCount(),
+            total: this.getTotal(),
+        });
+
+        this.events.emit("basket:changed", {
+                items: this.getItems(),
+                count: this.getCount(),
+                total: this.getTotal(),
+        });
     };
 
     getTotal(): number {

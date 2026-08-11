@@ -98,6 +98,199 @@ Presenter - презентер содержит основную логику п
 `emit<T extends object>(event: string, data?: T): void` - инициализация события. При вызове события в метод передается название события и объект с данными, который будет использован как аргумент для вызова обработчика.  
 `trigger<T extends object>(event: string, context?: Partial<T>): (data: T) => void` - возвращает функцию, при вызове которой инициализируется требуемое в параметрах событие с передачей в него данных из второго параметра.
 
+#### Класс Header (наследник Component)
+    Интрефейс:
+        HeaderData
+    
+    Тип данных:
+        counter: number
+
+    Поля класса:
+        basketButton: HTMLButtonElement - кнопка открытия корзины, расположена в шапке сайта.
+        counterElement: HTMLElement - элемент, отображающий колличестов товаров в корзине
+    
+    Методы класса:
+        set counter(value: number) - обновляет значение счётчика товаров в корзине    
+
+#### Класс Gallery (наследник Component)
+    Интерфейс:
+        GalleryData
+
+    Тип данных:
+        catalog: HTMLElement[]
+
+    Поля класса:
+        catalogElement: HTMLElement - контейнер каталога товаров
+
+    Методы класса:    
+        set catalog(items: HTMLElement[]) - принимает массив DOM-элементов и вставляет их в контейнер каталога
+
+
+#### Класс ModalWindow
+    Интерфейс:
+        ModalWindowData
+
+    Тип данных:
+        content: HTMLElement
+    
+    Поля класса:
+        contentElement: HTMLElement - контейнер содержимого окна
+        buttonClose: HTMLButtonElement - кнопка закрытия окна
+        
+    Методы класса:
+        set content(element: HTMLElement) - устанавливает содержимое модального окна
+        close(): void - закрывает модальное окно
+
+#### Класс Card (абстрактный родительский класс)
+    Интерфейс:
+        CardData
+
+    Тип данных:
+        id: string
+        title: string
+        price: number | null
+        category: string
+        image: string
+
+    Поля класса:
+        cardElement: HTMLElement - корневой элемент карточки
+
+    Методы класса:
+        set id(value: string) - устанавливает индефикатор карточки
+        set title(value: string) - устанавливает название товара
+        set price(value: number | null) - устанавливает цену товара
+        set category(value: string) - устанавливает категорию товара
+        set image(value: string) - устанавливает изображение товара
+
+##### Класс CardCatalog (наследник Card)
+    Интерфейс:
+        CardCatalogData
+
+    Тип данных: 
+        (наследует все поля CardData)
+
+    Поля класса:
+        cardElement: HTMLElement - корневой элемент карточки (наследуется)
+
+    Методы класса:
+        (наследует все сеттеры от базового класса Card)
+
+##### Класс CardPreview (наследник Card)
+    Интерфейс:
+        CardPreviewData
+
+    Тип данных:
+        description: string
+        isLocked: boolean
+
+    Поля класса:
+        cardElement: HTMLElement - корневой элемент карточки (наследуется)
+        cardDescription: HTMLElement - элемент описания товара
+        cardButton: HTMLButtonElement - кнопа "В корзину"
+
+    Методы класса:
+        set description(value: string) - устанавливает описание товара
+        set isLocked(value: boolean) - блокирует/разблокирует кнопку "В корзину" (если товар уже в корзине)
+
+##### Класс CardBasket (наследник Card)
+    Интерфейс:
+        CardBasketData
+
+    Тип данных:
+        index: number
+
+    Поля класса:
+        cardElement: HTMLElement - корневой элемент карточки (наследуется)
+        indexElement: HTMLElement - элемент с порядковым номером товара
+        deleteButton: HTMLButtonElement - кнопка удаление товара из корзины
+
+    Методы класса:
+        set index(value: number) - устанавливает порядковый номер товара в корзине
+
+#### Класс Basket
+    Интерфейс:
+        BasketData
+    
+    Тип данных:
+        items: HTMLElement[]
+        totalPrice: number
+
+    Поля класса:
+        basketElement: HTMLElement - корневой элемент корзины
+        basketListElement: HTMLElement - контейнер списка товаров в корзине
+        basketPriceElement: HTMLElement - элемент общей стоимости
+        checkoutButton: HTMLButtonElement - кнопка "Оформить"
+
+    Методы класса:
+        set items(elements: HTMLElement[]) - принимает массив карточек CardBasket  и вставляет их в список
+        set totalPrice(value: number) - обновляет общую стоимость корзины
+
+#### Класс Form (абстрактный родительский класс)
+    Интерфейс: 
+        FormData
+
+    Тип данных:
+        valid: boolean
+        errors: Record<string, string>
+
+    Поля класса:
+        formElement: HTMLFormElement - корневой элемент
+        submitButton: HTMLButtonElement - кнопка отправки формы
+        errorsElement: HTMLElement - контейнер для отображения ошибок
+
+    Методы класса:
+        set valid(value: boolean) - блокирует/разблокирует кнопку отправки формы
+        set errors(value: Record<string, string>) - устанавливает ошибки валидации по полям
+        renderErrors(): void - отрисовывает сообщения об ошибках в соответствующих полях
+
+##### Класс OrderForm (наследник Form)
+    Интерфейс:
+        OrderFormData
+
+    Тип данных:
+        payment: string
+        address: string
+
+    Поля класса:
+        formElement: HTMLFormElement - корневой элемент формы(наследуется)
+        paymentButtons: HTMLButtonElement - кнопка выбора способа оплаты
+        addressInput: HTMLInputElement - поле ввода адреса доставки
+
+    Методы класса:
+        set payment(value: string) - выделяет активную кнопку способа оплаты
+        set address(value: string) - устанавливает значение для поля адреса
+
+##### Класс ContactsForm (наследник Form)
+    Интерфейс:
+        ContactsFormData
+
+    Тип данных:
+        email: string
+        phone: string
+
+    Поля класса:
+        formElement: HTMLFormElement - корневой элемент формы (наследуется)
+        emailInput: HTMLInputElement - поле ввода email
+        phoneInput: HTMLInputElement - поле ввода телефона
+
+    Методы класса:
+        set email(value: string) - устанавливает значение поля email
+        set phone(value: string) - устанавливает значение поля телефона
+
+#### Класс Success
+    Интерфейс:
+        SuccessData
+
+    Тип данных:
+        total: number
+
+    Поля класса:
+        successElement: HTMLElement - корневой элемент окна успеха
+        descriptionElement: HTMLElement - элемент с текстом "Списано N синапсов"
+        closeButton: HTMLButtonElement - кнопка "За новыми покупками!"
+
+    Методы класса:
+        set total(value: number) - устанавливает сумму, списанную при оформлении заказа
 
 ## Данные:
     Товар:
@@ -171,196 +364,98 @@ Presenter - презентер содержит основную логику п
 
         postOrder(order: IOrder): Promise<IOrderResult> — делает post запрос на эндпоинт /order/ и передаёт в него данные, полученные в параметрах метода, а возвращает объект, подтверждающий покупку на определенную сумму.
 
-### Класс Header (наследник Component)
-    Интрефейс:
-        HeaderData
-    
-    Тип данных:
-        counter: number
-
-    Поля класса:
-        headerBasketButton: HTMLButtonElement - кнопка открытия корзины, расположена в шапке сайта.
-        headerBasketCounter: HTMLElement - элемент, отображающий колличестов товаров в корзине
-    
-    Методы класса:
-        set counter(value: number) - обновляет значение счётчика товаров в корзине    
-
-### Класс Gallery (наследник Component)
-    Интерфейс:
-        GalleryData
-
-    Тип данных:
-        catalog: HTMLElement[]
-
-    Поля класса:
-        catalogElement: HTMLElement - контейнер каталога товаров
-
-    Методы класса:    
-        set catalog(items: HTMLElement[]) - принимает массив DOM-элементов и вставляет их в контейнер каталога
 
 
-## Класс ModalWindow
-    Интерфейс:
-        ModalWindowData
+## События приложения
 
-    Тип данных:
-        content: HTMLElement
-    
-    Поля класса:
-        contentElement: HTMLElement - контейнер содержимого окна
-        buttonClose: HTMLButtonElement - кнопка закрытия окна
-        
-    Методы класса:
-        set content(element: HTMLElement) - устанавливает содержимое модального окна
-        close(): void - закрывает модальное окно
+### basket:open
 
-## Класс Card (абстрактный родительский класс)
-    Интерфейс:
-        CardData
+- Источник: `Header`
+- Описание: пользователь открыл корзину
+- Данные: не передаются
 
-    Тип данных:
-        id: string
-        title: string
-        price: number | null
-        category: string
-        image: string
+### modal:close
 
-    Поля класса:
-        cardElement: HTMLElement - корневой элемент карточки
+- Источник: `ModalWindow`
+- Описание: пользователь закрыл модальное окно
+- Способы:
+  - клик по кнопке закрытия;
+  - клик по подложке
+- Данные: не передаются
 
-    Методы класса:
-        set id(value: string) - устанавливает индефикатор карточки
-        set title(value: string) - устанавливает название товара
-        set price(value: number | null) - устанавливает цену товара
-        set category(value: string) - устанавливает категорию товара
-        set image(value: string) - устанавливает изображение товара
+### card:select
 
-### Класс CardCatalog (наследник Card)
-    Интерфейс:
-        CardCatalogData
+- Источник: `CardCatalog`
+- Описание: пользователь выбрал товар в каталоге
+- Данные:
+    {
+        "id": "идентификатор товара"
+    }
 
-    Тип данных: 
-        (наследует все поля CardData)
+### card:add
+- Источник: `CardPreview`
+- Описание: пользователь добавил товар в корзину из карточки товара
+- Данные:
+    {
+        "id": "идентификатор товара"
+    }
 
-    Поля класса:
-        cardElement: HTMLElement - корневой элемент карточки (наследуется)
+### basket:remove
+- Источник: `CardBasket`
+- Описание: пользователь удаляет товар из корзины
+- Данные:
+    {
+        "id": "идентификатор товара"
+    }
 
-    Методы класса:
-        (наследует все сеттеры от базового класса Card)
+### basket:checkout
+- Источник: `Basket`
+- Описание: пользователь нажал кнопку «Оформить»
+- Данные: не передаются
 
-### Класс CardPreview (наследник Card)
-    Интерфейс:
-        CardPreviewData
+### order:payment
+- Источник: `OrderForm`
+- Описание: пользователь выбрал способ оплаты
+- Данные:
+    {
+        "payment": "card | cash"
+    }
 
-    Тип данных:
-        description: string
-        isLocked: boolean
+### order:address
+- Источник: `OrderForm`
+- Описание: пользователь изменил адрес доставки
+- Данные:
+    {
+        "value": "адрес доставки"
+    }
 
-    Поля класса:
-        cardElement: HTMLElement - корневой элемент карточки (наследуется)
-        cardDescription: HTMLElement - элемент описания товара
-        cardButton: HTMLButtonElement - кнопа "В корзину"
+### order:submit
+- Источник: `OrderForm`
+- Описание: пользователь отправил форму заказа
+- Данные: не передаются
 
-    Методы класса:
-        set description(value: string) - устанавливает описание товара
-        set isLocked(value: boolean) - блокирует/разблокирует кнопку "В корзину" (если товар уже в корзине)
+### contacts:email
+- Источник: `ContactsForm`
+- Описание: пользователь изменил email
+- Данные:
+    {
+        "value": "email"
+    }
 
-### Класс CardBasket (наследник Card)
-    Интерфейс:
-        CardBasketData
+### contacts:phone
+- Источник: `ContactsForm`
+- Описание: пользователь изменил телефон
+- Данные:
+    {
+        "value": "phone"
+    }
 
-    Тип данных:
-        index: number
+### contacts:submit
+- Источник: `ContactsForm`
+- Описание: пользователь отправил форму контактов
+- Данные: не передаются
 
-    Поля класса:
-        cardElement: HTMLElement - корневой элемент карточки (наследуется)
-        indexElement: HTMLElement - элемент с порядковым номером товара
-        deleteButton: HTMLButtonElement - кнопка удаление товара из корзины
-
-    Методы класса:
-        set index(value: number) - устанавливает порядковый номер товара в корзине
-
-## Класс Basket
-    Интерфейс:
-        BasketData
-    
-    Тип данных:
-        items: HTMLElement[]
-        totalPrice: number
-
-    Поля класса:
-        basketElement: HTMLElement - корневой элемент корзины
-        basketListElement: HTMLElement - контейнер списка товаров в корзине
-        basketPriceElement: HTMLElement - элемент общей стоимости
-        checkoutButton: HTMLButtonElement - кнопка "Оформить"
-
-    Методы класса:
-        set items(elements: HTMLElement[]) - принимает массив карточек CardBasket  и вставляет их в список
-        set totalPrice(value: number) - обновляет общую стоимость корзины
-
-## Класс Form (абстрактный родительский класс)
-    Интерфейс: 
-        FormData
-
-    Тип данных:
-        valid: boolean
-        errors: Record<string, string>
-
-    Поля класса:
-        formElement: HTMLFormElement - корневой элемент
-        submitButton: HTMLButtonElement - кнопка отправки формы
-        errorsElement: HTMLElement - контейнер для отображения ошибок
-
-    Методы класса:
-        set valid(value: boolean) - блокирует/разблокирует кнопку отправки формы
-        set errors(value: Record<string, string>) - устанавливает ошибки валидации по полям
-        renderErrors(): void - отрисовывает сообщения об ошибках в соответствующих полях
-
-### Класс OrderForm (наследник Form)
-    Интерфейс:
-        OrderFormData
-
-    Тип данных:
-        payment: string
-        address: string
-
-    Поля класса:
-        formElement: HTMLFormElement - корневой элемент формы(наследуется)
-        paymentButtons: HTMLButtonElement - кнопка выбора способа оплаты
-        addressInput: HTMLInputElement - поле ввода адреса доставки
-
-    Методы класса:
-        set payment(value: string) - выделяет активную кнопку способа оплаты
-        set address(value: string) - устанавливает значение для поля адреса
-
-### Класс ContactsForm (наследник Form)
-    Интерфейс:
-        ContactsFormData
-
-    Тип данных:
-        email: string
-        phone: string
-
-    Поля класса:
-        formElement: HTMLFormElement - корневой элемент формы (наследуется)
-        emailInput: HTMLInputElement - поле ввода email
-        phoneInput: HTMLInputElement - поле ввода телефона
-
-    Методы класса:
-        set email(value: string) - устанавливает значение поля email
-        set phone(value: string) - устанавливает значение поля телефона
-
-## Класс Success
-    Интерфейс:
-        SuccessData
-
-    Тип данных:
-        total: number
-
-    Поля класса:
-        successElement: HTMLElement - корневой элемент окна успеха
-        descriptionElement: HTMLElement - элемент с текстом "Списано N синапсов"
-        closeButton: HTMLButtonElement - кнопка "За новыми покупками!"
-
-    Методы класса:
-        set total(value: number) - устанавливает сумму, списанную при оформлении заказа
+### success:close
+- Источник: `Success`
+- Описание: пользователь закрыл экран успешного заказа
+- Данные: не передаются

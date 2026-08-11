@@ -1,3 +1,5 @@
+import { IEvents } from "../base/Events";
+
 import { FormErrors, IBuyer, IBuyerModel, TPayment } from "../../types";
 
 export class BuyerModel implements IBuyerModel {
@@ -5,21 +7,62 @@ export class BuyerModel implements IBuyerModel {
     protected address: string = "";
     protected phone: string = "";
     protected email: string = "";
+    protected events: IEvents;
+
+    constructor(events: IEvents) {
+        this.events = events;
+    }
 
     setPayment(value: TPayment): void {
         this.payment = value;
+
+        this.events.emit("buyer:payment-changed", {
+            payment: this.payment,
+        });
+
+        this.events.emit("buyer:changed", {
+            buyer: this.getBuyerData(),
+            errors: this.validate(),
+        });
     };
 
     setAddress(value: string): void {
         this.address = value;
+
+        this.events.emit("buyer:address-changed", {
+            address: this.address,
+        });
+
+        this.events.emit("buyer:changed", {
+            buyer: this.getBuyerData(),
+            errors: this.validate(),
+        });
     };
 
     setPhone(value: string): void {
         this.phone = value;
+
+        this.events.emit("buyer:phone-changed", {
+            phone: this.phone,
+        });
+
+        this.events.emit("buyer:changed", {
+            buyer: this.getBuyerData(),
+            errors: this.validate(),
+        });
     };
 
     setEmail(value: string): void {
         this.email = value;
+
+        this.events.emit("buyer:email-changed", {
+            email: this.email,
+        });
+
+        this.events.emit("buyer:changed", {
+            buyer: this.getBuyerData(),
+            errors: this.validate(),
+        });
     };
 
     getBuyerData(): IBuyer {
@@ -36,6 +79,10 @@ export class BuyerModel implements IBuyerModel {
         this.address = "";
         this.phone = "";
         this.email = "";
+
+        this.events.emit("buyer:cleared", {
+            buyer: this.getBuyerData(),
+        });
     };
 
     validate(): FormErrors {
