@@ -3,7 +3,7 @@ import { Component } from "../base/Component";
 import { IEvents } from "../base/Events";
 
 export interface ISuccess {
-    total: number;
+    total: string;
 }
 
 export class Success extends Component<ISuccess> {

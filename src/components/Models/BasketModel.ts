@@ -11,71 +11,39 @@ export class BasketModel implements IBasketModel {
 
     getItems(): IProduct[] {
         return this.items;
-    };
+    }
 
     addItem(product: IProduct): void {
         if (!this.hasItem(product.id)) {
             this.items.push(product);
-
-            this.events.emit("basket:item-added", {
-                product,
-                count: this.getCount(),
-                total: this.getTotal(),
-            });
-
-            this.events.emit("basket:changed", {
-                items: this.getItems(),
-                count: this.getCount(),
-                total: this.getTotal(),
-            });
-        };
-    };
+            this.events.emit("basket:changed");
+        }
+    }
 
     removeItem(id: string): void {
         const index = this.items.findIndex((item) => item.id === id);
         if (index !== -1) {
-            const removedItem = this.items[index];
             this.items.splice(index, 1);
-
-            this.events.emit("basket:item-removed", {
-                product: removedItem,
-                count: this.getCount(),
-                total: this.getTotal(),
-            });
-
-            this.events.emit("basket:changed", {
-                items: this.getItems(),
-                count: this.getCount(),
-                total: this.getTotal(),
-            });
-        };
-    };
+            this.events.emit("basket:changed");
+        }
+    }
 
     clear(): void {
         this.items = [];
-        this.events.emit("basket:cleared", {
-            count: this.getCount(),
-            total: this.getTotal(),
-        });
-
-        this.events.emit("basket:changed", {
-                items: this.getItems(),
-                count: this.getCount(),
-                total: this.getTotal(),
-        });
-    };
+        this.events.emit("basket:changed");
+    }
 
     getTotal(): number {
         return this.items.reduce((sum, item) => {
             return sum + (item.price ?? 0);
         }, 0);
-    };
+    }
 
     getCount(): number {
        return this.items.length; 
-    };
+    }
 
     hasItem(id: string): boolean {
         return this.items.some((item) => item.id === id);
-    };
+    }
 }

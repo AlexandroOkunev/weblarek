@@ -1,5 +1,4 @@
 import { IEvents } from "../base/Events";
-
 import { FormErrors, IBuyer, IBuyerModel, TPayment } from "../../types";
 
 export class BuyerModel implements IBuyerModel {
@@ -15,55 +14,23 @@ export class BuyerModel implements IBuyerModel {
 
     setPayment(value: TPayment): void {
         this.payment = value;
-
-        this.events.emit("buyer:payment-changed", {
-            payment: this.payment,
-        });
-
-        this.events.emit("buyer:changed", {
-            buyer: this.getBuyerData(),
-            errors: this.validate(),
-        });
-    };
+        this.events.emit("buyer:changed");
+    }
 
     setAddress(value: string): void {
         this.address = value;
-
-        this.events.emit("buyer:address-changed", {
-            address: this.address,
-        });
-
-        this.events.emit("buyer:changed", {
-            buyer: this.getBuyerData(),
-            errors: this.validate(),
-        });
-    };
+        this.events.emit("buyer:changed");
+    }
 
     setPhone(value: string): void {
         this.phone = value;
-
-        this.events.emit("buyer:phone-changed", {
-            phone: this.phone,
-        });
-
-        this.events.emit("buyer:changed", {
-            buyer: this.getBuyerData(),
-            errors: this.validate(),
-        });
-    };
+        this.events.emit("buyer:changed");
+    }
 
     setEmail(value: string): void {
         this.email = value;
-
-        this.events.emit("buyer:email-changed", {
-            email: this.email,
-        });
-
-        this.events.emit("buyer:changed", {
-            buyer: this.getBuyerData(),
-            errors: this.validate(),
-        });
-    };
+        this.events.emit("buyer:changed");
+    }
 
     getBuyerData(): IBuyer {
         return {
@@ -72,38 +39,35 @@ export class BuyerModel implements IBuyerModel {
             phone: this.phone,
             email: this.email,
         };
-    };
+    }
 
     clear(): void {
         this.payment = null;
         this.address = "";
         this.phone = "";
         this.email = "";
-
-        this.events.emit("buyer:cleared", {
-            buyer: this.getBuyerData(),
-        });
-    };
+        this.events.emit("buyer:changed");
+    }
 
     validate(): FormErrors {
         const errors: FormErrors = {};
 
         if (!this.payment) {
             errors.payment = "Не выбран вид оплаты";       
-        };
+        }
 
         if (!this.address || this.address.trim().length === 0) {
             errors.address = "Укажите адрес";
-        };
+        }
 
         if (!this.phone || this.phone.trim().length === 0) {
             errors.phone = "Укажите телефон";
-        };
+        }
 
         if (!this.email || this.email.trim().length === 0) {
             errors.email = "Укажите емэйл";
-        };
+        }
 
         return errors;
-    };
+    }
 }

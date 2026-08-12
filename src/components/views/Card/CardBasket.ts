@@ -10,24 +10,20 @@ export class CardBasket extends Card<ICardBasket> {
     protected indexElement: HTMLElement;
     protected deleteButton: HTMLButtonElement;
 
-    constructor(events: IEvents, container: HTMLElement) {
+    constructor(events: IEvents, container: HTMLElement, onRemove: () => void) {
         super(events, container);
 
         this.indexElement = ensureElement<HTMLElement>(
             ".basket__item-index",
-            this.cardElement
+            this.container
         );
 
         this.deleteButton = ensureElement<HTMLButtonElement>(
             ".basket__item-delete",
-            this.cardElement
+            this.container
         );
 
-        this.deleteButton.addEventListener("click", () => {
-            this.events.emit("basket:remove", {
-                id: this.cardElement.dataset.id ?? "",
-            });
-        });
+        this.deleteButton.addEventListener("click", onRemove);
     }
 
     set index(value: number) {

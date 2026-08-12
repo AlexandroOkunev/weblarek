@@ -3,7 +3,7 @@ import { Component } from "../base/Component";
 import { IEvents } from "../base/Events";
 
 export interface IModalWindow {
-    contant: HTMLElement;
+    content: HTMLElement;
 }
 
 export class ModalWindow extends Component<IModalWindow> {
@@ -13,7 +13,6 @@ export class ModalWindow extends Component<IModalWindow> {
 
     constructor(events: IEvents, container: HTMLElement) {
         super(container);
-
         this.events = events;
 
         this.contentElement = ensureElement<HTMLElement>(
@@ -27,24 +26,26 @@ export class ModalWindow extends Component<IModalWindow> {
         );
 
         this.buttonClose.addEventListener("click", () => {
-            this.events.emit("modal:close");
+            this.close();
         });
 
         this.container.addEventListener("click", (event: MouseEvent) => {
             if (event.target === this.container) {
-                this.events.emit("modal:close");
+                this.close();
             }
         });
-
     }
 
-    set content(element: HTMLElement) {
-        this.contentElement.replaceChildren(element);
+    open(): void {
         this.container.classList.add("modal_active");
     }
 
     close(): void {
         this.container.classList.remove("modal_active");
         this.contentElement.replaceChildren();
+    }
+
+    set content(element: HTMLElement) {
+        this.contentElement.replaceChildren(element);
     }
 }

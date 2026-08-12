@@ -1,9 +1,10 @@
 import { ensureElement } from "../../../utils/utils";
 import { IEvents } from "../../base/Events";
 import { Form, IForm } from "./Form";
+import { TPayment } from "../../../types";
 
 export interface IOrderForm extends IForm {
-    payment: string;
+    payment: TPayment;
     address: string;
 }
 
@@ -15,20 +16,18 @@ export class OrderForm extends Form<IOrderForm> {
         super(events, container);
 
         this.paymentButtons = Array.from(
-            this.formElement.querySelectorAll<HTMLButtonElement>(
-                ".button_alt"
-            )
+            this.container.querySelectorAll<HTMLButtonElement>(".button_alt")
         );
 
         this.addressInput = ensureElement<HTMLInputElement>(
             'input[name="address"]',
-            this.formElement
+            this.container
         );
 
-        this.paymentButtons.forEach(buttton => {
-            buttton.addEventListener("click", () => {
+        this.paymentButtons.forEach(button => {
+            button.addEventListener("click", () => {
                 this.events.emit("order:payment", {
-                    payment: buttton.name,
+                    payment: button.name as TPayment,
                 });
             });
         });
@@ -38,14 +37,9 @@ export class OrderForm extends Form<IOrderForm> {
                 value: this.addressInput.value,
             });
         });
-
-        this.formElement.addEventListener("submit", event => {
-            event.preventDefault();
-            this.events.emit("order:submit");
-        });
     }
 
-    set payment(value: string) {
+    set payment(value: TPayment) {
         this.paymentButtons.forEach(button => {
             button.classList.toggle(
                 "button_alt-active",
@@ -55,7 +49,7 @@ export class OrderForm extends Form<IOrderForm> {
     }
 
     set address(value: string) {
-        if (this.addressInput.value !==value) {
+        if (this.addressInput.value !== value) {
             this.addressInput.value = value;
         }
     }

@@ -5,11 +5,11 @@ import { IEvents } from "../base/Events";
 export interface IBasket {
     items: HTMLElement[];
     totalPrice: number;
+    isEmpty: boolean;
 }
 
 export class Basket extends Component<IBasket> {
     protected events: IEvents;
-    protected basketElement: HTMLElement;
     protected basketListElement: HTMLElement;
     protected basketPriceElement: HTMLElement;
     protected checkoutButton: HTMLButtonElement;
@@ -18,20 +18,20 @@ export class Basket extends Component<IBasket> {
         super(container);
 
         this.events = events;
-        this.basketElement = this.container;
+
         this.basketListElement = ensureElement<HTMLElement>(
             ".basket__list",
-            this.basketElement
+            this.container
         );
 
         this.basketPriceElement = ensureElement<HTMLElement>(
             ".basket__price",
-            this.basketElement
+            this.container
         );
 
         this.checkoutButton = ensureElement<HTMLButtonElement>(
             ".basket__button",
-            this.basketElement
+            this.container
         );
 
         this.checkoutButton.addEventListener("click", () => {
@@ -44,6 +44,10 @@ export class Basket extends Component<IBasket> {
     }
 
     set totalPrice(value: number) {
-        this.basketPriceElement.textContent = `${value} синапсов`
+        this.basketPriceElement.textContent = `${value} синапсов`;
+    }
+
+    set isEmpty(value: boolean) {
+        this.checkoutButton.disabled = value;
     }
 }

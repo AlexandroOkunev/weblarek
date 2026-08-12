@@ -16,12 +16,12 @@ export class ContactsForm extends Form<IContactsForm> {
 
         this.emailInput = ensureElement<HTMLInputElement>(
             'input[name="email"]',
-            this.formElement
+            this.container
         );
 
         this.phoneInput = ensureElement<HTMLInputElement>(
             'input[name="phone"]',
-            this.formElement
+            this.container
         );
 
         this.emailInput.addEventListener("input", () => {
@@ -34,11 +34,6 @@ export class ContactsForm extends Form<IContactsForm> {
             this.events.emit("contacts:phone", {
                 value: this.phoneInput.value,
             });
-        });
-
-        this.formElement.addEventListener("submit", event => {
-            event.preventDefault();
-            this.events.emit("contacts:submit");
         });
     }
 
