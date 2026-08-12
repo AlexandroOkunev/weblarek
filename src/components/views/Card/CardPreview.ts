@@ -3,11 +3,11 @@ import { IEvents } from "../../base/Events";
 import { Card, ICard } from "./Card";
 
 export interface ICardPreview extends ICard {
-    deccription: string;
+    description: string;
     isLocked: boolean;
 }
 
-export class CardPreview extends Card {
+export class CardPreview extends Card<ICardPreview> {
     protected cardDescription: HTMLElement;
     protected cardButton: HTMLButtonElement;
 
@@ -25,9 +25,8 @@ export class CardPreview extends Card {
         );
 
         this.cardButton.addEventListener("click", () => {
-            this.events.emit("card:add", {
-                id: this.cardElement.dataset.id ?? "",
-            });
+            const id = this.cardElement.dataset.id ?? "";
+            this.events.emit("card:add", { id });
         });
     }
 
@@ -36,6 +35,19 @@ export class CardPreview extends Card {
     }
 
     set isLocked(value: boolean) {
-        this.cardButton.disabled = value;
+        this.cardButton.textContent = value
+            ? "Удалить из корзины"
+            : "В корзину";
+    }
+
+    set price(value: number | null) {
+        super.price = value;
+
+        if (value === null) {
+            this.cardButton.textContent = "Недоступно";
+            this.cardButton.disabled = true;
+        } else {
+            this.cardButton.disabled = false;
+        }
     }
 }

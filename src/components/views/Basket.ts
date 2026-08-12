@@ -44,6 +44,6 @@ export class Basket extends Component<IBasket> {
     }
 
     set totalPrice(value: number) {
-        this.basketListElement.textContent = `${value} синапсов`
+        this.basketPriceElement.textContent = `${value} синапсов`
     }
 }

@@ -20,7 +20,7 @@ export class Success extends Component<ISuccess> {
         this.successElement = this.container;
 
         this.descriptionElement = ensureElement<HTMLElement>(
-            ".order-success__decription",
+            ".order-success__description",
             this.successElement
         );
 

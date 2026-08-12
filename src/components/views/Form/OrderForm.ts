@@ -2,12 +2,12 @@ import { ensureElement } from "../../../utils/utils";
 import { IEvents } from "../../base/Events";
 import { Form, IForm } from "./Form";
 
-export interface OrderIForm extends IForm {
+export interface IOrderForm extends IForm {
     payment: string;
     address: string;
 }
 
-export class Orderform extends Form {
+export class OrderForm extends Form<IOrderForm> {
     protected paymentButtons: HTMLButtonElement[];
     protected addressInput: HTMLInputElement;
 
@@ -34,12 +34,12 @@ export class Orderform extends Form {
         });
 
         this.addressInput.addEventListener("input", () => {
-            this.events.emit("oreder:address", {
+            this.events.emit("order:address", {
                 value: this.addressInput.value,
             });
         });
 
-        this,this.formElement.addEventListener("submit", event => {
+        this.formElement.addEventListener("submit", event => {
             event.preventDefault();
             this.events.emit("order:submit");
         });

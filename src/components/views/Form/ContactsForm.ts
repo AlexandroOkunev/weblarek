@@ -2,12 +2,12 @@ import { ensureElement } from "../../../utils/utils";
 import { IEvents } from "../../base/Events";
 import { Form, IForm } from "./Form";
 
-export interface ContactsIForm extends IForm {
+export interface IContactsForm extends IForm {
     email: string;
     phone: string;
 }
 
-export class ContactsForm extends Form {
+export class ContactsForm extends Form<IContactsForm> {
     protected emailInput: HTMLInputElement;
     protected phoneInput: HTMLInputElement;
 
@@ -15,12 +15,12 @@ export class ContactsForm extends Form {
         super(events, container);
 
         this.emailInput = ensureElement<HTMLInputElement>(
-            '.input[name="email"]',
+            'input[name="email"]',
             this.formElement
         );
 
         this.phoneInput = ensureElement<HTMLInputElement>(
-            '.input[name="phone"]',
+            'input[name="phone"]',
             this.formElement
         );
 

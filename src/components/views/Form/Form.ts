@@ -7,7 +7,7 @@ export interface IForm {
     errors: Record<string, string>;
 }
 
-export abstract class Form extends Component<IForm> {
+export abstract class Form<T extends IForm = IForm> extends Component<T> {
     protected events: IEvents;
     protected formElement: HTMLFormElement;
     protected submitButton: HTMLButtonElement;
