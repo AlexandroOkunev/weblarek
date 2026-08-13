@@ -170,7 +170,7 @@ events.on("contacts:submit", () => {
 
 events.on("success:close", () => modal.close());
 
-function updateBasket(): HTMLElement {
+function updateBasket(): void {
     const items = basketModel.getItems();
     const basketItems = items.map((product, index) => {
         const container = cloneTemplate<HTMLLIElement>("#card-basket");
@@ -189,7 +189,7 @@ function updateBasket(): HTMLElement {
         });
     });
 
-    return basket.render({
+    basket.render({
         items: basketItems,
         totalPrice: basketModel.getTotal(),
         isEmpty: items.length === 0,
@@ -197,53 +197,46 @@ function updateBasket(): HTMLElement {
 }
 
 function openBasket(): void {
-    const element = updateBasket();
+    modal.content = basket.render();
     modal.open();
-    modal.content = element;
 }
 
-function updateOrderForm(): HTMLElement {
+function updateOrderForm(): void {
     const buyerData = buyerModel.getBuyerData();
     const errors = buyerModel.validate();
-    const orderErrors: Record<string, string> = {};
 
-    if (errors.payment) orderErrors.payment = errors.payment;
-    if (errors.address) orderErrors.address = errors.address;
-
-    return orderForm.render({
+    orderForm.render({
         payment: buyerData.payment ?? "card",
         address: buyerData.address,
-        valid: Object.keys(orderErrors).length === 0,
-        errors: orderErrors,
+        valid: !errors.payment && !errors.address,
+        errorsText: Object.values({ payment: errors.payment, address: errors.address })
+            .filter((i) => !!i)
+            .join("; "),
     });
 }
 
 function openOrderForm(): void {
-    const element = updateOrderForm();
+    modal.content = orderForm.render();
     modal.open();
-    modal.content = element;
 }
 
-function updateContactsForm(): HTMLElement {
+function updateContactsForm(): void {
     const buyerData = buyerModel.getBuyerData();
     const errors = buyerModel.validate();
-    const contactErrors: Record<string, string> = {};
 
-    if (errors.email) contactErrors.email = errors.email;
-    if (errors.phone) contactErrors.phone = errors.phone;
-
-    return contactsForm.render({
+    contactsForm.render({
         email: buyerData.email,
         phone: buyerData.phone,
-        valid: Object.keys(contactErrors).length === 0,
-        errors: contactErrors,
+        valid: !errors.email && !errors.phone,
+        errorsText: Object.values({ email: errors.email, phone: errors.phone })
+            .filter((i) => !!i)
+            .join("; "),
     });
 }
 
 function openContactsForm(): void {
-    const element = updateContactsForm();
+    modal.content = contactsForm.render();
     modal.open();
-    modal.content = element;
 }
 
 function renderSuccess(total: number): void {
