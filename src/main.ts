@@ -1,4 +1,5 @@
 import "./scss/styles.scss";
+import { apiProducts } from "./utils/data";
 
 import { API_URL, CDN_URL } from "./utils/constants";
 import { cloneTemplate } from "./utils/utils";
@@ -245,6 +246,9 @@ function renderSuccess(total: number): void {
     modal.content = element;
 }
 
-webLarekApi.getProductList()
-    .then((response) => productsModel.setItems(response.items))
-    .catch((error) => console.error("Ошибка при получении товаров:", error));
+   webLarekApi.getProductList()
+       .then((response) => productsModel.setItems(response.items))
+       .catch((error) => {
+           console.warn("API недоступен, используются локальные мок-данные:", error);
+           productsModel.setItems(apiProducts.items);
+       });
