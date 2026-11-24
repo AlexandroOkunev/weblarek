@@ -53,10 +53,3 @@
 4. Продакшен-сборка:
 
         npm run build
-
----
-
-## 📚 Исходные материалы (Яндекс Практикум)
-
-- [Макет в Figma](https://www.figma.com/file/...)
-- [Чеклист](https://www.notion.so/praktikum/...)
