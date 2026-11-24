@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
+  base: './',
   css: {
     preprocessorOptions: {
-      base: './',
       scss: {
         loadPaths: [
           './src/scss'
