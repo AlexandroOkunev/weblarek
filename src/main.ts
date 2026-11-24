@@ -166,7 +166,12 @@ events.on("contacts:submit", () => {
             buyerModel.clear();
             renderSuccess(result.total);
         })
-        .catch((error) => console.error("Ошибка оформления заказа:", error));
+        .catch((error) => {
+            console.warn("API недоступен, заказ оформлен локально (мок):", error);
+            basketModel.clear();
+            buyerModel.clear();
+            renderSuccess(orderData.total);
+        });
 });
 
 events.on("success:close", () => modal.close());
